@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using ProAgilWebAPI.Data;
-using ProAgilWebAPI.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using ProAgil.Repository;
 
 namespace ProAgilWebAPI.Controllers
 {
@@ -14,12 +13,12 @@ namespace ProAgilWebAPI.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        //public DataContext _db { get; }
-        public readonly DataContext _db; //Tem a mesma função da linha comentada acima
+        //public DataContext _context { get; }
+        public readonly ProAgilContext _context; //Tem a mesma função da linha comentada acima
 
-        public ValuesController(DataContext db)
+        public ValuesController(ProAgilContext context)
         {
-            _db = db;
+            _context = context;
         }
         // GET api/values
         [HttpGet]
@@ -27,7 +26,7 @@ namespace ProAgilWebAPI.Controllers
         {
             try
             {
-                var results = await _db.Eventos.ToListAsync();
+                var results = await _context.Eventos.ToListAsync();
                 return Ok(results);
             }
             catch (System.Exception)
@@ -42,7 +41,7 @@ namespace ProAgilWebAPI.Controllers
         {
             try
             {
-                var results = await _db.Eventos.FirstOrDefaultAsync(x => x.EventoId == id);
+                var results = await _context.Eventos.FirstOrDefaultAsync(x => x.Id == id);
                 return Ok(results);
             }
             catch (System.Exception)
